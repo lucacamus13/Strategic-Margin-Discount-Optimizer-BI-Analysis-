@@ -1,19 +1,26 @@
-# 📊 Retail Optimization: De la Fuga de Margen a la Simulación de Beneficios
+# 📊 Retail Profitability Optimization: De la Fuga de Margen a la Simulación Estratégica
 
 ## 📝 Resumen del Proyecto
-Este proyecto aborda un problema crítico de rentabilidad en una operación de Retail. A través de un flujo de trabajo que integra **Cloud Computing (BigQuery)** y **Business Intelligence (Power BI)**, se identificó que el volumen de ventas no se traducía en ganancias debido a una política de descuentos ineficiente en categorías específicas.
+Este proyecto aborda un problema crítico de rentabilidad en una operación de Retail. A pesar de mantener un alto volumen de ventas ($2.3M), la utilidad neta se veía comprometida por "fugas" de margen no identificadas.
 
-El resultado final es un **Dashboard Estratégico** que permite a la gerencia realizar análisis forenses de rentabilidad y simular cambios en las políticas de precios para recuperar margen operativo en tiempo real.
+A través de un flujo de trabajo que integra **Cloud Computing (Google BigQuery)** y **Business Intelligence (Power BI)**, se desarrolló una solución de inteligencia de negocios que no solo diagnostica el problema, sino que permite simular escenarios de recuperación financiera en tiempo real.
 
 ---
 
-## 🛠️ Fase 1: Detección del Problema (SQL & BigQuery)
-El análisis comenzó en la nube. Se procesaron los datos crudos en **Google BigQuery** para identificar los "Profit Killers" (productos que generan ventas pero destruyen valor).
+## 🛠️ Stack Tecnológico
+* **Google BigQuery (SQL):** Extracción, limpieza y "Feature Engineering" en la nube.
+* **Power BI:** Modelado de datos (Esquema en Estrella) y visualización avanzada.
+* **DAX (Data Analysis Expressions):** Lógica de negocio compleja para simulaciones *What-If*.
 
-**Hallazgo Técnico:** Se realizó un proceso de limpieza y modelado en la región `southamerica-west1` (Santiago) para cumplir con requisitos de latencia y residencia de datos.
+---
+
+## 🚀 Fase 1: Detección del Problema (SQL & Cloud)
+El análisis comenzó fuera de Power BI. Utilizando **SQL en BigQuery**, se procesaron los datos crudos para identificar qué categorías generaban flujo de caja pero destruían valor ("Profit Killers").
+
+**Desafío Técnico:** Se gestionó la residencia de datos conectando al proyecto específico en la región `southamerica-west1` para garantizar la integridad de la consulta.
 
 ```sql
--- Query para identificar subcategorías con margen negativo
+-- Query de diagnóstico: Identificación de márgenes negativos por subcategoría
 SELECT 
     Sub_Category, 
     ROUND(SUM(Sales), 2) AS Total_Sales,
@@ -24,22 +31,59 @@ FROM `proyecto-bi-483420.analisis_retail.tabla_final_pbi`
 GROUP BY 1
 HAVING Total_Profit < 0
 ORDER BY Margin_Percentage ASC;
+```
 
-Este análisis reveló que la categoría Tables (Mesas) presentaba las pérdidas más críticas de la operación.🔍 Fase 2: Análisis Forense (Power BI)Con los datos modelados, se implementó un análisis de causa raíz en Power BI utilizando técnicas avanzadas de visualización:Análisis de Correlación (Scatter Chart): Se mapeó la relación entre el Descuento y el Margen. Se descubrió un "Punto de Quiebre" en el 20%. Cualquier descuento superior a este umbral genera una caída drástica en la rentabilidad.Validación de Transacciones (DAX): Se detectó que en categorías críticas, hasta el 64% de las transacciones operan bajo pérdida.Métrica de Margen Real:$$Profit Margin \% = \frac{\sum(Profit)}{\sum(Sales)}$$💡 Fase 3: Solución y Simulación (What-If Analysis)Para transformar el reporte en una herramienta de decisión, se desarrolló una lógica de simulación basada en Parámetros de Escenario. El usuario puede ajustar el límite de descuento permitido y observar el impacto financiero instantáneo.Lógica de Simulación (DAX):Fragmento de códigoGanancia Simulada = 
+**Hallazgo:** La subcategoría **"Tables" (Mesas)** operaba con pérdidas sistemáticas a pesar de ser un "Top Seller" en volumen.
+
+---
+
+## 🔍 Fase 2: Análisis Forense (Visualización)
+Ya en Power BI, se aplicaron técnicas de análisis visual para encontrar la causa raíz del déficit en muebles:
+
+* **Correlación Descuento vs. Margen:** Mediante un gráfico de dispersión, se identificó un **"Punto de Quiebre" del 20%**. Cualquier venta con un descuento superior a este umbral resulta matemáticamente en pérdida.
+* **Validación de Transacciones:** Se crearon medidas de control que revelaron que el **64% de las transacciones** en la categoría de mesas destruyen valor.
+
+![Gráfico de Dispersión - Scatter Chart](link_de_tu_imagen_scatter_aqui)
+
+---
+
+## 💡 Fase 3: Solución Prescriptiva (Simulador What-If)
+Para pasar del "diagnóstico" a la "acción", se construyó un **Simulador de Escenarios**. Utilizando parámetros de campo y DAX avanzado, la gerencia puede ajustar el límite máximo de descuento permitido y ver instantáneamente cuánto dinero se recuperaría.
+
+**Lógica DAX de la Simulación:**
+
+```dax
+Ganancia Simulada = 
 VAR LimiteSeleccionado = [Limite de Descuento Valor]
 RETURN
 SUMX(
     'tabla_final_pbi',
     IF('tabla_final_pbi'[Discount] > LimiteSeleccionado,
-        -- Recálculo de venta con tope de descuento sugerido
+        -- Recálculo: Si el descuento excede el límite, se simula la venta al tope permitido
         ( ('tabla_final_pbi'[Sales] / (1 - 'tabla_final_pbi'[Discount])) * (1 - LimiteSeleccionado) ) 
         - 'tabla_final_pbi'[Estimated_Cost],
+        -- Si está dentro del límite, se mantiene la ganancia real
         'tabla_final_pbi'[Profit]
     )
 )
-📈 Impacto y ResultadosEl modelo cuantificó un potencial de optimización masivo para la organización:Estado Actual: Ganancia real de $286.40k.Margen Recuperable: $175.54k (mediante el ajuste de topes promocionales).Mejora Proyectada: Incremento del 61% en la utilidad neta global.🚀 Habilidades Técnicas DemostradasData Engineering: Extracción, transformación y carga (ETL) en Google BigQuery SQL.Business Logic: Implementación de modelos de simulación financiera con DAX.Data Storytelling: Diseño de dashboards orientados a la toma de decisiones ejecutivas.UX/UI for BI: Creación de tooltips dinámicos, navegación y diseño de "Bridge Charts" (Cascada).
-### Instrucciones de finalización:
-1.  **Sube tus imágenes:** En los lugares donde puse `[Image of...]`, borra ese texto y arrastra tus capturas de pantalla de Power BI directamente en el editor de GitHub.
-2.  **Publica:** Haz clic en **"Commit changes"**.
+```
 
-**¿Te gustaría que te ayude a preparar un "Cheat Sheet" con las 5 preguntas técnicas de SQL 
+---
+
+## 📈 Impacto de Negocio
+El modelo final cuantifica el costo de oportunidad de la política de precios actual:
+
+* **Estado Actual (Ganancia Real):** $286.40k
+* **Recuperación por Optimización:** **$175.54k** (Al limitar descuentos al 18-20%).
+* **Proyección Final:** Incremento del **61%** en la utilidad neta global.
+
+> **Visualización Clave:** Se utilizó un **Gráfico de Cascada (Waterfall Chart)** para representar el puente financiero entre la situación actual y el escenario optimizado.
+
+![Gráfico de Cascada - Waterfall Chart](link_de_tu_imagen_waterfall_aqui)
+
+---
+
+## 👤 Autor
+Proyecto desarrollado por **[Tu Nombre]**.
+* [Enlace a mi LinkedIn](URL_de_tu_LinkedIn)
+* [Enlace a mi Portafolio](URL_de_tu_Portafolio)
