@@ -1,20 +1,20 @@
-# 📊 Retail Profitability Optimization: De la Fuga de Margen a la Simulación Estratégica
+# Retail Profitability Optimization: De la Fuga de Margen a la Simulación Estratégica
 
-## 📝 Resumen del Proyecto
+## Resumen del Proyecto
 Este proyecto aborda un problema crítico de rentabilidad en una operación de Retail. A pesar de mantener un alto volumen de ventas ($2.3M), la utilidad neta se veía comprometida por "fugas" de margen no identificadas.
 
 A través de un flujo de trabajo que integra **Cloud Computing (Google BigQuery)** y **Business Intelligence (Power BI)**, se desarrolló una solución de inteligencia de negocios que no solo diagnostica el problema, sino que permite simular escenarios de recuperación financiera en tiempo real.
 
 ---
 
-## 🛠️ Stack Tecnológico
+## Stack Tecnológico
 * **Google BigQuery (SQL):** Extracción, limpieza y "Feature Engineering" en la nube.
 * **Power BI:** Modelado de datos (Esquema en Estrella) y visualización avanzada.
 * **DAX (Data Analysis Expressions):** Lógica de negocio compleja para simulaciones *What-If*.
 
 ---
 
-## 🚀 Fase 1: Detección del Problema (SQL & Cloud)
+## Fase 1: Detección del Problema (SQL & Cloud)
 El análisis comenzó fuera de Power BI. Utilizando **SQL en BigQuery**, se procesaron los datos crudos para identificar qué categorías generaban flujo de caja pero destruían valor ("Profit Killers").
 
 **Desafío Técnico:** Se gestionó la residencia de datos conectando al proyecto específico en la región `southamerica-west1` para garantizar la integridad de la consulta.
@@ -27,7 +27,7 @@ SELECT
     ROUND(SUM(Profit), 2) AS Total_Profit,
     ROUND(AVG(Discount), 4) AS Avg_Discount,
     ROUND((SUM(Profit) / SUM(Sales)) * 100, 2) AS Margin_Percentage
-FROM `proyecto-bi-483420.analisis_retail.tabla_final_pbi`
+FROM `proyecto-bi-483420.analisis_retail.tabla_final`
 GROUP BY 1
 HAVING Total_Profit < 0
 ORDER BY Margin_Percentage ASC;
@@ -37,7 +37,7 @@ ORDER BY Margin_Percentage ASC;
 
 ---
 
-## 🔍 Fase 2: Análisis Forense (Visualización)
+## Fase 2: Análisis Forense (Visualización)
 Ya en Power BI, se aplicaron técnicas de análisis visual para encontrar la causa raíz del déficit en muebles:
 
 * **Correlación Descuento vs. Margen:** Mediante un gráfico de dispersión, se identificó un **"Punto de Quiebre" del 20%**. Cualquier venta con un descuento superior a este umbral resulta matemáticamente en pérdida.
@@ -47,7 +47,7 @@ Ya en Power BI, se aplicaron técnicas de análisis visual para encontrar la cau
 
 ---
 
-## 💡 Fase 3: Solución Prescriptiva (Simulador What-If)
+## Fase 3: Solución Prescriptiva (Simulador What-If)
 Para pasar del "diagnóstico" a la "acción", se construyó un **Simulador de Escenarios**. Utilizando parámetros de campo y DAX avanzado, la gerencia puede ajustar el límite máximo de descuento permitido y ver instantáneamente cuánto dinero se recuperaría.
 
 **Lógica DAX de la Simulación:**
@@ -57,20 +57,20 @@ Ganancia Simulada =
 VAR LimiteSeleccionado = [Limite de Descuento Valor]
 RETURN
 SUMX(
-    'tabla_final_pbi',
-    IF('tabla_final_pbi'[Discount] > LimiteSeleccionado,
+    'tabla_final',
+    IF('tabla_final'[Discount] > LimiteSeleccionado,
         -- Recálculo: Si el descuento excede el límite, se simula la venta al tope permitido
-        ( ('tabla_final_pbi'[Sales] / (1 - 'tabla_final_pbi'[Discount])) * (1 - LimiteSeleccionado) ) 
-        - 'tabla_final_pbi'[Estimated_Cost],
+        ( ('tabla_final'[Sales] / (1 - 'tabla_final'[Discount])) * (1 - LimiteSeleccionado) ) 
+        - 'tabla_final'[Estimated_Cost],
         -- Si está dentro del límite, se mantiene la ganancia real
-        'tabla_final_pbi'[Profit]
+        'tabla_final'[Profit]
     )
 )
 ```
 
 ---
 
-## 📈 Impacto de Negocio
+## Impacto de Negocio
 El modelo final cuantifica el costo de oportunidad de la política de precios actual:
 
 * **Estado Actual (Ganancia Real):** $286.40k
@@ -83,7 +83,7 @@ El modelo final cuantifica el costo de oportunidad de la política de precios ac
 
 ---
 
-## 👤 Autor
-Proyecto desarrollado por **[Tu Nombre]**.
-* [Enlace a mi LinkedIn](URL_de_tu_LinkedIn)
-* [Enlace a mi Portafolio](URL_de_tu_Portafolio)
+## Autor
+Proyecto desarrollado por Luca Camus.
+* [Enlace a mi LinkedIn](https://www.linkedin.com/in/luca-camus/)
+
