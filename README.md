@@ -43,7 +43,8 @@ Ya en Power BI, se aplicaron técnicas de análisis visual para encontrar la cau
 * **Correlación Descuento vs. Margen:** Mediante un gráfico de dispersión, se identificó un **"Punto de Quiebre" del 20%**. Cualquier venta con un descuento superior a este umbral resulta matemáticamente en pérdida.
 * **Validación de Transacciones:** Se crearon medidas de control que revelaron que el **64% de las transacciones** en la categoría de mesas destruyen valor.
 
-![Gráfico de Dispersión - Scatter Chart](link_de_tu_imagen_scatter_aqui)
+![Gráfico de Dispersión - Scatter Chart](<img width="450" height="284" alt="image" src="https://github.com/user-attachments/assets/5e683fe7-c6f1-485a-ac67-0e55449ae448" />
+)
 
 ---
 
