@@ -43,7 +43,7 @@ Ya en Power BI, se aplicaron técnicas de análisis visual para encontrar la cau
 * **Correlación Descuento vs. Margen:** Mediante un gráfico de dispersión, se identificó un **"Punto de Quiebre" del 20%**. Cualquier venta con un descuento superior a este umbral resulta matemáticamente en pérdida.
 * **Validación de Transacciones:** Se crearon medidas de control que revelaron que el **64% de las transacciones** en la categoría de mesas destruyen valor.
 
-![Gráfico de Dispersión - Scatter Chart](<img width="450" height="284" alt="image" src="https://github.com/user-attachments/assets/5e683fe7-c6f1-485a-ac67-0e55449ae448" />)
+![Gráfico de Dispersión - Scatter Chart](scatter.jpeg)
 
 ---
 
@@ -73,13 +73,13 @@ SUMX(
 ## Impacto de Negocio
 El modelo final cuantifica el costo de oportunidad de la política de precios actual:
 
-* **Estado Actual (Ganancia Real):** $286.40k
-* **Recuperación por Optimización:** **$175.54k** (Al limitar descuentos al 18-20%).
-* **Proyección Final:** Incremento del **61%** en la utilidad neta global.
+* **Estado Actual (Ganancia Real):** - $17.73k
+* **Recuperación por Optimización:** **$33.72k** (Al limitar descuentos al 18-20%).
+* **Proyección Final:** Incremento del **63%** en la utilidad neta global.
 
 > **Visualización Clave:** Se utilizó un **Gráfico de Cascada (Waterfall Chart)** para representar el puente financiero entre la situación actual y el escenario optimizado.
 
-![Gráfico de Cascada - Waterfall Chart](link_de_tu_imagen_waterfall_aqui)
+![Gráfico de Cascada - Waterfall Chart](water_fall.jpeg)
 
 ---
 
