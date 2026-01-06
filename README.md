@@ -1,4 +1,3 @@
-# Strategic-Margin-Discount-Optimizer-BI-Analysis-
 📊 Optimización de Margen en Retail: Análisis Forense y Simulación What-If
 🎯 Problema de Negocio
 A pesar de tener un volumen de ventas superior a los $2.3 millones, la operación de retail presentaba "fugas" de beneficio significativas. El objetivo fue identificar las categorías que erosionan el margen y proponer una solución basada en datos.
